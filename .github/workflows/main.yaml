@@ -8,7 +8,7 @@ on:
 jobs:
   deploy-to-github-pages:
     # use ubuntu-latest image to run steps on
-    runs-on: mcr.microsoft.com/dotnet/sdk:9.0
+    runs-on: debian-stable-slim
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
     - uses: actions/checkout@v2    
