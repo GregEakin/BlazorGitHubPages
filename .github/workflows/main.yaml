@@ -7,21 +7,19 @@ on:
 
 jobs:
   deploy-to-github-pages:
-    # use ubuntu-latest image to run steps on
     runs-on: ubuntu-latest
     steps:
-    # uses GitHub's checkout action to checkout code form the master branch
-    - uses: actions/checkout@v2    
+    - name: Checkout repository
+      uses: actions/checkout@v4
   
-    # sets up .NET Core SDK 3.1
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.0  
+        global-json-file: global.json
 
-    # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
-      run: dotnet publish BlazorGitHubPages.csproj -c Release -o release --nologo
+      run: dotnet publish GitHubPages.csproj -c Release -o release --nologo
+      working-directory: GitHubPages
 
     #- name: Commit wwwroot to GitHub Pages
     #  uses: JamesIves/github-pages-deploy-action@3.7.1
