@@ -6,7 +6,8 @@ on:
     branches: [ dev ]
 
 jobs:
-  deploy-to-github-pages:
+
+  build:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -21,6 +22,25 @@ jobs:
       run: dotnet publish GitHubPages.csproj -c Release -o release --nologo
       working-directory: GitHubPages
 
+    - name: Upload artifacts
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: GitHubPages/bin/Release/net9.0/publish/
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: gethub-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v3
+        
     #- name: Commit wwwroot to GitHub Pages
     #  uses: JamesIves/github-pages-deploy-action@3.7.1
     #  with:
