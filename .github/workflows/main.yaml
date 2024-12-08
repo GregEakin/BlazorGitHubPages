@@ -19,13 +19,13 @@ jobs:
         global-json-file: global.json
 
     - name: Publish .NET Core Project
-      run: dotnet publish GitHubPages.csproj -c Release -o release --nologo
+      run: dotnet publish GitHubPages.csproj -c Release -o release --nologo -r linux-x64 -p:PublishTrimmed=true
       working-directory: GitHubPages
 
     - name: Upload artifacts
       uses: actions/upload-pages-artifact@v3
       with:
-        path: GitHubPages/bin/Release/net9.0/publish/
+        path: GitHubPages/release/
 
   deploy:
     needs: build
